@@ -30,5 +30,8 @@ public class HelloConSpringTest {
 		for(String name: hello.getNames()) {
 			System.out.println(name);
 		}
+		// Iterable 인터페이스의 forEach(Consumer) 메서드 호출하기
+		// 람다식 함수형 인터페이스
+		
 	}
 }
