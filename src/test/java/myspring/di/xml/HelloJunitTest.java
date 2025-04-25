@@ -21,6 +21,14 @@ public class HelloJunitTest {
 		System.out.println(helloById == helloByType);
 		assertSame(helloById, helloByType);
 		
+		// 값 비교
+		assertEquals("Hello 스프링", helloById.sayHello());
+		
+		helloById.print();
+		
+		// Container 객체가 생성한 StringPrinter 스프링빈을 요청하기
+		Printer printer = context.getBean("strPrinter", Printer.class);
+		assertEquals("Hello 스프링", printer.toString());
 	}
 	
 }
