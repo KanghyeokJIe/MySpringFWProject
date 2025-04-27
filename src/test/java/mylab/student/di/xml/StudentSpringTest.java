@@ -25,6 +25,13 @@ public class StudentSpringTest {
 	@Test
 	void testService() {
 		assertNotNull(service);
+		assertEquals("C001", service.getCourse().getCourseId());
+		assertEquals("A", service.calculateGrade("S001"));
+		assertEquals(2, service.getHighScoreStudents(80).size());
+		
+		for(Student student : service.getHighScoreStudents(80)) {
+			System.out.println(student);
+		}
 	}
 	
 	@Test @Disabled
