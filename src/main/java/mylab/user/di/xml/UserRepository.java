@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepository {
+	// @Value("MySQL")
     private String dbType = "MySQL"; // 기본값 설정
 
     public UserRepository() {}

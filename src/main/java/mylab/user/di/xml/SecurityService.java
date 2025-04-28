@@ -1,8 +1,8 @@
 package mylab.user.di.xml;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class SecurityService {
 
     public boolean authenticate(String userId, String password) {
