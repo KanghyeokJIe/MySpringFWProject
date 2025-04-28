@@ -13,7 +13,7 @@
 	
 	<!-- Hello 클래스를  Spring Bean으로 설정 Setter Injection 방식 -->
 	<bean id="hello" class="myspring.di.xml.Hello" scope="singleton">
-		<property name="name" value="스프링" />
+		<property name="name" value="${myName1}" />
 		<property name="printer" ref="strPrinter" />
 	</bean>
 	
@@ -25,16 +25,15 @@
 			<list>
 				<value>스프링프레임워크</value>
 				<value>스프링부트</value>
-				<value>스프링클라우드</value>
+				<value>스프링클라우드</value>				
 			</list>
 		</property>
-		
 	</bean>
 	
-	<!--  Auto Component Scanning 설정 -->
+	<!-- Auto Component Scanning 설정 -->
 	<context:component-scan base-package="myspring.di.annot" />
-	
 	
 	<!-- values.properties 파일의 정보를 설정 -->
 	<context:property-placeholder location="classpath:values.properties" />
+	
 </beans>
