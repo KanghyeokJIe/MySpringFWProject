@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,15 @@ public class UserMyBatisTest {
 	@Autowired
 	DataSource dataSource;
 	
+	@Autowired
+	SqlSessionFactory sessionFactory;
+	
+	@Test
+	void sqlSession() {
+		System.out.println(sessionFactory.getClass().getName());
+	}
+	
+	
 	@Test
 	void connection() {
 		try {
@@ -29,7 +39,7 @@ public class UserMyBatisTest {
 			DatabaseMetaData metaData = connection.getMetaData();
 			logger.debug("DB URL = " + metaData.getURL());
 			logger.debug("DB Username = " + metaData.getUserName());
-			logger.info("DB Vendor Name = " + metaData.getDatabaseProductName());
+			logger.debug("DB Vendor Name = " + metaData.getDatabaseProductName());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
