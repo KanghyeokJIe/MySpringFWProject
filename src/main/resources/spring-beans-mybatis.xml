@@ -1,46 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- dao, service auto scanning -->
-	<context:component-scan base-package="**.service, **.dao" />
-	
-	<context:property-placeholder location="classpath:values.properties"/>
-	
-	<!-- DataSource 구현체인 HikariDataSource 클래스를 Bean으로 설정하기 -->
-	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
-		p:driverClassName="${db.driverClass}"
-		p:jdbcUrl="${db.url}" 
-		p:username="${db.username}"
-		p:password="${db.password}"
-	/>
-	
-	<!-- SqlSessionFactoryBean 설정 -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<!-- setDataSource(DataSource source) -->
-		<property name="dataSource" ref="dataSource" />
-		<!-- setConfigLocation(Resource configLocation) MyBatis config xml-->
-		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml" />
-		<!-- setMapperLocations(Resource... mapperLocations) SQL문이 포함된 mapper xml -->
-		<property name="mapperLocations">
-			<list>
-				<value>classpath:mybatis/*Mapper.xml</value>
-			</list>
-		</property>
-	</bean>
-	
-	<!-- SqlSession 설정 consturctor injection 방식만 가능함 (기본생성자가 없기 때문에)-->
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg ref="sqlSessionFactory" />
-	</bean>
-	
-	<!-- MapperScannerConfigurer 설정  Mapper 인터페이스를 스캐닝 하는 역할 -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="**.dao.mapper"/>
-		<property name="sqlSessionTemplateBeanName" value="sqlSession" /> 
-	</bean>
+    <!-- 외부 properties 파일 로딩 -->
+    <context:property-placeholder location="classpath:values.properties"/>
+
+    <!-- DataSource 설정 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${db.driverClass}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+    </bean>
+
+    <!-- SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeAliasesPackage" value="mylab.customer.vo"/>
+        <property name="mapperLocations" value="classpath:mybatis/CustomerMapper.xml"/>
+    </bean>
+
+    <!-- Mapper 스캔 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="mylab.customer.dao.map"/>
+    </bean>
+
+    <!-- SqlSessionTemplate 등록 -->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
 </beans>
